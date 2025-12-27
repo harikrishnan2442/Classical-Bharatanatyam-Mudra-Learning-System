@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mudra Guru - Classical Dance Learning System</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background: linear-gradient(to bottom, #f8f6f4 0%, #ebe8e4 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #3a2a1a;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #8b6914;
+            margin-bottom: 10px;
+            font-size: 3em;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-shadow: 1px 1px 2px rgba(139, 105, 20, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #a0826d;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            font-style: italic;
+            letter-spacing: 1px;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 400px 400px;
+            gap: 20px;
+        }
+
+        .video-section {
+            background: linear-gradient(135deg, #fff9f0 0%, #fef5e7 100%);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 24px rgba(139, 105, 20, 0.15);
+            border: 2px solid #d4af37;
+        }
+
+        .control-panel,
+        .info-panel {
+            background: linear-gradient(135deg, #fff9f0 0%, #fef5e7 100%);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 24px rgba(139, 105, 20, 0.15);
+            border: 2px solid #d4af37;
+        }
+
+        #videoCanvas {
+            width: 100%;
+            border-radius: 10px;
+            background: #000;
+            border: 3px solid #d4af37;
+        }
+
+        .status-bar {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .status-card {
+            background: linear-gradient(135deg, #d4af37 0%, #c9a532 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(139, 105, 20, 0.3);
+        }
+
+        .status-label {
+            font-size: 0.95em;
+            opacity: 0.95;
+            margin-bottom: 5px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .status-value {
+            font-size: 1.8em;
+            font-weight: 600;
+            font-family: 'Cinzel', serif;
+        }
+
+        .freeze-btn {
+            width: 100%;
+            padding: 15px;
+            margin-top: 15px;
+            background: linear-gradient(135deg, #8b6914 0%, #a0826d 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 12px rgba(139, 105, 20, 0.3);
+        }
+
+        .freeze-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(139, 105, 20, 0.4);
+        }
+
+        .freeze-btn.frozen {
+            background: linear-gradient(135deg, #c9302c 0%, #d9534f 100%);
+        }
+
+        .mode-selector {
+            margin-bottom: 20px;
+        }
+
+        .mode-selector h3,
+        .target-selector h3,
+        .feedback-panel h3,
+        .info-panel h2 {
+            margin-bottom: 12px;
+            color: #8b6914;
+            font-family: 'Cinzel', serif;
+            font-weight: 600;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #d4af37;
+            padding-bottom: 8px;
+        }
+
+        .mode-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .mode-btn {
+            padding: 12px;
+            border: 2px solid #d4af37;
+            background: white;
+            color: #8b6914;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1em;
+        }
+
+        .mode-btn:hover {
+            background: #fef5e7;
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, #d4af37 0%, #c9a532 100%);
+            color: white;
+        }
+
+        .target-selector {
+            margin-bottom: 20px;
+        }
+
+        #targetMudraSelect {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #d4af37;
+            border-radius: 8px;
+            font-size: 1em;
+            background: white;
+            color: #3a2a1a;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .feedback-panel {
+            background: #fef5e7;
+            border-radius: 10px;
+            padding: 15px;
+            min-height: 120px;
+            border: 1px solid #d4af37;
+        }
+
+        .feedback-message {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #3a2a1a;
+        }
+
+        .feedback-error {
+            color: #c9302c;
+            font-weight: 600;
+        }
+
+        .feedback-success {
+            color: #5cb85c;
+            font-weight: 700;
+            font-size: 1.3em;
+        }
+
+        .accuracy-bar {
+            width: 100%;
+            height: 30px;
+            background: #ebe8e4;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 15px 0;
+            border: 1px solid #d4af37;
+        }
+
+        .accuracy-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #5cb85c 0%, #4cae4c 100%);
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .instructions {
+            background: linear-gradient(to right, #fef5e7 0%, #fff9f0 100%);
+            border-left: 4px solid #d4af37;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .instructions h4 {
+            margin-bottom: 10px;
+            color: #8b6914;
+            font-family: 'Cinzel', serif;
+            font-weight: 600;
+        }
+
+        .instructions ul {
+            list-style-position: inside;
+            color: #3a2a1a;
+        }
+
+        .instructions li {
+            margin: 5px 0;
+            font-size: 0.95em;
+        }
+
+        /* Info Panel Styles */
+        .info-panel {
+            max-height: calc(100vh - 60px);
+            overflow-y: auto;
+        }
+
+        .mudra-name {
+            font-size: 2em;
+            color: #8b6914;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .mudra-category {
+            text-align: center;
+            font-style: italic;
+            color: #a0826d;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .info-section {
+            margin-bottom: 20px;
+        }
+
+        .info-section h4 {
+            color: #8b6914;
+            font-family: 'Cinzel', serif;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+            letter-spacing: 0.5px;
+        }
+
+        .info-section p {
+            line-height: 1.8;
+            color: #3a2a1a;
+            text-align: justify;
+            font-size: 1.05em;
+        }
+
+        .divider {
+            height: 2px;
+            background: linear-gradient(to right, transparent, #d4af37, transparent);
+            margin: 20px 0;
+        }
+
+        .placeholder-text {
+            text-align: center;
+            color: #a0826d;
+            font-style: italic;
+            padding: 40px 20px;
+            font-size: 1.1em;
+        }
+
+        /* Scrollbar Styling */
+        .info-panel::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .info-panel::-webkit-scrollbar-track {
+            background: #f8f6f4;
+            border-radius: 4px;
+        }
+
+        .info-panel::-webkit-scrollbar-thumb {
+            background: #d4af37;
+            border-radius: 4px;
+        }
+
+        .info-panel::-webkit-scrollbar-thumb:hover {
+            background: #c9a532;
+        }
+
+        @media (max-width: 1400px) {
+            .main-content {
+                grid-template-columns: 1fr 350px;
+            }
+
+            .info-panel {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>CBMLS</h1>
+        <div class="subtitle">Classical Bharatanatyam Mudra Learning System</div>
+
+        <div class="main-content">
+            <!-- Video Section -->
+            <div class="video-section">
+                <canvas id="videoCanvas"></canvas>
+
+                <div class="status-bar">
+                    <div class="status-card">
+                        <div class="status-label">Detected Mudra</div>
+                        <div class="status-value" id="predictedMudra">---</div>
+                    </div>
+                    <div class="status-card">
+                        <div class="status-label">Confidence</div>
+                        <div class="status-value" id="confidence">0%</div>
+                    </div>
+                </div>
+
+                <button class="freeze-btn" id="freezeBtn" onclick="toggleFreeze()">
+                    ⏸ Freeze Frame
+                </button>
+            </div>
+
+            <!-- Control Panel -->
+            <div class="control-panel">
+                <!-- Mode Selection -->
+                <div class="mode-selector">
+                    <h3>Mode</h3>
+                    <div class="mode-buttons">
+                        <button class="mode-btn active" onclick="setMode('detect')">
+                            Auto-Detect
+                        </button>
+                        <button class="mode-btn" onclick="setMode('practice')">
+                            Practice Mode
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Target Mudra Selection -->
+                <div class="target-selector" id="targetSection" style="display: none;">
+                    <h3>Target Mudra</h3>
+                    <select id="targetMudraSelect" onchange="setTargetMudra()">
+                        <option value="">Select a mudra...</option>
+                    </select>
+                </div>
+
+                <!-- Accuracy Bar (Practice Mode) -->
+                <div id="accuracySection" style="display: none;">
+                    <h3>Accuracy</h3>
+                    <div class="accuracy-bar">
+                        <div class="accuracy-fill" id="accuracyFill" style="width: 0%">0%</div>
+                    </div>
+                </div>
+
+                <!-- Feedback Panel -->
+                <div class="feedback-panel">
+                    <h3>Feedback</h3>
+                    <div class="feedback-message" id="feedbackMessage">
+                        Position your hand in front of the camera to begin.
+                    </div>
+                </div>
+
+                <!-- Instructions -->
+                <div class="instructions">
+                    <h4>How to Use:</h4>
+                    <ul>
+                        <li><strong>Auto-Detect:</strong> Shows which mudra you're making</li>
+                        <li><strong>Practice Mode:</strong> Select a target mudra and get real-time feedback</li>
+                        <li><strong>Freeze:</strong> Pause to read mudra details</li>
+                        <li>Try to achieve 90%+ accuracy!</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Information Panel -->
+            <div class="info-panel">
+                <h2>Mudra Information</h2>
+                <div id="mudraInfo">
+                    <div class="placeholder-text">
+                        Perform a mudra to see its detailed description, significance, and historical context.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mudra information database
+        const mudraDatabase = {
+    Katakavardhana: {
+        category: 'Samyuta Hasta (Double Hand)',
+        meaning: 'Linked Bracelets / Interlocked Hands',
+        description: 'Kataka-vardhana is formed by bringing both hands together in Katakamukha and joining them at the fingertips, creating the appearance of linked ornaments. The fingers are gracefully curved inward while the wrists remain relaxed.',
+        significance: 'Symbolizes unity, growth, and interconnectedness. The gesture resembles expanding ornaments or blossoming vines, often associated with beauty and abundance.',
+        usage: 'Used to show garlands, wreaths, blooming flowers, collective actions, and depictions of expanding or growing objects. Also used in showing decorative items in temple scenes.',
+        history: 'Described in classical Natyashastra commentaries and widely used in South Indian temple dances to represent ornamentation and divine beauty.'
+    },
+    Swastikam: {
+        category: 'Samyuta Hasta (Double Hand)',
+        meaning: 'Crossed / Auspicious Symbol',
+        description: 'Swastika mudra is formed by crossing both wrists while keeping the fingers extended in Pataka. The hands create a cross-like structure symbolizing auspiciousness.',
+        significance: 'Represents the ancient Swastika symbol – an emblem of prosperity, protection, and cosmic harmony in Indian tradition.',
+        usage: 'Used to show trees, birds sitting with crossed wings, blocked passages, and auspicious moments. Often used in depictions of blessings and sacred rituals.',
+        history: 'The Swastika symbol appears in the Indus Valley Civilization (2500 BCE). This mudra translates the sacred symbol into a dance gesture.'
+    },
+    Shanka: {
+        category: 'Samyuta Hasta (Double Hand)',
+        meaning: 'Conch Shell',
+        description: 'Shanka mudra is created by encircling the left thumb with the right hand\'s fingers while the left fingers rest on top, forming the shape of a conch.',
+        significance: 'Symbolizes purity, divine sound (Om), and ritual worship. The conch (shankha) is sacred in Hindu rituals and associated with Lord Vishnu.',
+        usage: 'Used during prayer sequences, depictions of Vishnu, temple rituals, and to illustrate the blowing of a conch in battle or ceremonies.',
+        history: 'The conch has been used in Indian worship for thousands of years. This mudra visually represents its spiral form in dance.'
+    },
+    Kartariswastika: {
+        category: 'Samyuta Hasta (Double Hand)',
+        meaning: 'Crossed Scissors',
+        description: 'Formed by crossing the wrists with both hands in Kartarimukha mudra. The fingers resemble blades while the crossing suggests movement or division.',
+        significance: 'Symbolizes conflict, separation, defensive energy, and branching paths. Used for dynamic storytelling.',
+        usage: 'Depicts trees with crossed branches, opposition of forces, conflict scenes, and pathways dividing in two.',
+        history: 'Appears in medieval dance treatises and is especially used in warrior sequences and dramatic narratives.'
+    },
+    Kapotham: {
+        category: 'Asamyuta Hasta (Single Hand)',
+        meaning: 'Pigeon',
+        description: 'Kapotha is formed by bringing all fingertips together while keeping the thumb slightly bent, resembling the beak of a pigeon.',
+        significance: 'Symbolizes humility, devotion, and communication. In dance, it expresses gentle actions.',
+        usage: 'Used to depict polite conversation, devotion in temple settings, and gentle bird imagery.',
+        history: 'Referenced in Abhinaya Darpana, this mudra is frequently used in devotional storytelling sequences.'
+    },
+    Garuda: {
+        category: 'Samyuta Hasta (Double Hand)',
+        meaning: 'Divine Eagle',
+        description: 'Garuda mudra is formed by interlocking the thumbs while spreading the remaining fingers wide to resemble wings.',
+        significance: 'Represents Garuda, the celestial vehicle of Lord Vishnu. Symbolizes power, speed, and protection.',
+        usage: 'Used to show birds flying, Garuda himself, or movements involving soaring and strength.',
+        history: 'Garuda is one of the oldest mythological figures in India. This mudra appears in iconography across South Asian temples.'
+    },
+    Sakata: {
+        category: 'Samyuta Hasta (Double Hand)',
+        meaning: 'Cart / Demon Face',
+        description: 'Sakata mudra is formed by bending the index and middle fingers of both hands while extending the others. Hands are held apart, representing ferocity.',
+        significance: 'Represents demons, evil spirits, frightening beings, or monstrous creatures.',
+        usage: 'Used in mythological scenes involving asuras, rakshasas, and dramatic intense emotions.',
+        history: 'This mudra appears in classical dance dramas where portraying demons is essential to narrative structure.'
+    },
+    Shivalinga: {
+        category: 'Samyuta Hasta (Double Hand)',
+        meaning: 'Symbol of Lord Shiva',
+        description: 'Formed by placing the left hand in Ardhachandra as a base while the right hand is shaped into a fist (Mushti) placed on top, representing the linga.',
+        significance: 'Represents Lord Shiva, creation, energy, and divine blessing.',
+        usage: 'Used in devotional sequences, depictions of temples, and stories from Shaivite mythology.',
+        history: 'The Shiva Linga is one of the oldest symbols of divine worship in India, dating back to pre-Vedic cultures.'
+    },
+    Chakra: {
+        category: 'Samyuta Hasta (Double Hand)',
+        meaning: 'Divine Disc / Wheel',
+        description: 'Chakra mudra is formed by placing both palms against each other with the fingers spread out, creating the visual of a spinning wheel or disc. The thumbs and fingers align to form a circular impression.',
+        significance: 'Symbolizes Vishnu\'s Sudarshana Chakra, the cosmic wheel of time and protection. Represents energy, motion, the cyclical nature of life, and divine power.',
+        usage: 'Used to depict the Sudarshana Chakra, the sun, wheels, cycles, and rotation. Common in scenes featuring Vishnu or cosmic energy.',
+        history: 'The chakra symbol appears in ancient Indian art from 1500 BCE onward. In dance, this mudra encapsulates the divine discus iconography seen in temple sculptures.'
+    },
+    Anjali: {
+        category: 'Samyuta Hasta (Double Hand)',
+        meaning: 'Salutation',
+        description: 'Anjali mudra is formed by joining both palms together in front of the chest in a prayer position. The fingers point upward, and the thumbs rest against the sternum. This is the universal gesture of respect and greeting.',
+        significance: 'One of the most sacred mudras in Indian culture, Anjali represents namaste - the recognition of the divine in all beings. It expresses reverence, devotion, and humility.',
+        usage: 'Used for greeting deities, paying respects to gurus and elders, expressing devotion in prayer sequences, and showing reverence in temple worship scenes.',
+        history: 'Dating back to ancient Vedic period, this gesture appears in temple sculptures across India from 5th century CE onwards. It remains the most common greeting gesture in Indian culture.'
+    },
+    Matsya: {
+        category: 'Samyuta Hasta (Double Hand)',
+        meaning: 'Fish',
+        description: 'Both palms are joined side by side with fingers extended outward and slightly curved, forming the elegant shape of a swimming fish.',
+        significance: 'Symbolizes movement, grace, and life. Associated with Matsya Avatar of Vishnu, the savior during the great flood.',
+        usage: 'Used to depict fish, underwater scenes, rivers, ocean life, and stories involving Matsya Avatar.',
+        history: 'The fish symbol is one of the earliest motifs in Indian art—from Harappan seals to Puranic mythology—reflected beautifully in this mudra.'
+    },
+    Berunda: {
+        category: 'Samyuta Hasta (Double Hand)',
+        meaning: 'Two-Headed Bird',
+        description: 'Berunda mudra is formed by bringing both hands into Kapitha and positioning them opposite each other, suggesting two connected heads. The structure resembles the mythical bird with two faces.',
+        significance: 'Represents the Gandaberunda—a powerful, two-headed bird associated with Lord Vishnu\'s fierce form (Narasimha). Symbolizes immense strength, dual perspectives, and protection.',
+        usage: 'Used to depict the Gandaberunda, intense divine energy, mythical birds, and scenes showing extraordinary strength.',
+        history: 'The Gandaberunda symbol appears in South Indian dynasties like the Chalukyas and Mysore Wodeyars. The mudra translates this royal emblem into movement.'
+    },
+    Nagabandha: {
+        category: 'Samyuta Hasta Mudra',
+        meaning: 'Entwined serpents; cosmic binding energy',
+        description: 'Both hands form serpentine curves, crossing and intertwining to resemble two snakes coiled around each other. The fingers curve gracefully while the wrists overlap, creating a fluid, looping structure.',
+        significance: 'Symbolizes cosmic protection, unity of dual energies, and the safeguarding presence of serpent deities. It represents kundalini power, inner awakening, and the fusion of earthly and divine forces.',
+        usage: 'Used to depict serpents, coils, divine guardians, or protective energy surrounding a deity or devotee. Also applied in scenes involving Naga worship, mythology, or symbolic bindings.',
+        history: 'Originates from classical Indian iconography where serpents (Nagas) held sacred importance in temples, legends, and rituals. Adopted into dance to visualize the intertwined movements of snakes.'
+    },
+    Karkatta: {
+        category: 'Samyuta Hasta Mudra',
+        meaning: 'Crab; gathering or pulling inward',
+        description: 'Both hands interlock with fingers spread outward like the claws of a crab. The palms face outward while the fingers create a clustered, gripping form.',
+        significance: 'Represents unity, strength, and consolidation. Symbolizes drawing energies together, collecting resources, or beginning coordinated movement.',
+        usage: 'Used to show stretching, yawning, gathering crowds or objects, and representing the form of a crab or clustered movement.',
+        history: 'The gesture is linked to early Natya practices symbolizing merging forces. It evolved to represent both literal crab imagery and metaphorical gathering actions.'
+    },
+    Pushpaputa: {
+        category: 'Samyuta Hasta Mudra',
+        meaning: 'Offering of flowers / Cupped hands',
+        description: 'Both palms are held together side by side, slightly cupped, creating a bowl-like shape as if holding petals, water, or light. Fingers remain aligned and gently curved.',
+        significance: 'Symbolizes devotion, humility, and sacred offering. Represents purity of intention and the act of giving or receiving blessings.',
+        usage: 'Used to depict offering flowers, receiving prasad, holding water, performing rituals, or expressing deep reverence during prayer.',
+        history: 'Originates from Vedic ritual gestures where offerings were made to deities using cupped hands. Later integrated into classical dance to depict devotional scenes.'
+    },
+    Varaha: {
+        category: 'Asamyuta Hasta Mudra',
+        meaning: 'Boar (avatar of Vishnu)',
+        description: 'The hand forms a snout-like shape with the thumb extended and fingers bent in a structured curve, representing the boar\'s strong face.',
+        significance: 'Symbolizes rescue, protection, strength, and divine intervention. Represents the Varaha Avatar who lifted Earth from the cosmic ocean.',
+        usage: 'Used when depicting the Varaha incarnation, boars, powerful movements, or acts of preservation in mythological stories.',
+        history: 'Derived from depictions in temple sculpture and Vaishnava traditions where the Varaha avatar holds major symbolic importance.'
+    },
+    Aralam: {
+        category: 'Asamyuta Hasta (Single Hand)',
+        meaning: 'Slightly Bent',
+        description: 'Arala mudra is formed with the index finger bent while other fingers are extended. The hand is slightly curved, creating a graceful arc. This mudra has a dynamic, flowing quality.',
+        significance: 'Represents natural movements and flowing forms. Used to depict curved objects, flowing water, and graceful motions in dance narratives.',
+        usage: 'Commonly used to show drinking water, depicting curved structures, showing garlands, and representing flowing movements in nature.',
+        history: 'Mentioned in the ancient text Natyashastra (2nd century BCE to 2nd century CE), this mudra has been preserved through centuries of dance tradition.'
+    },
+    Pasha: {
+        category: 'Samyuta Hasta (Double Hand)',
+        meaning: 'Noose',
+        description: 'Both hands curve inward forming the shape of a rope loop.',
+        significance: 'Represents binding, attachment, and emotional entanglement.',
+        usage: 'Used to show capturing, tying, or representing bonds.',
+        history: 'Symbolic in mythology—seen frequently with Yama and Ganesha.'
+    },
+    Mayura: {
+        category: 'Samyuta Hasta (Double Hand)',
+        meaning: 'Peacock',
+        description: 'Mayura mudra depicts the graceful peacock, national bird of India. The fingers are spread and positioned to resemble the peacock\'s magnificent tail feathers in full display.',
+        significance: 'The peacock is sacred in Hindu mythology, associated with deities like Kartikeya and Saraswati. It symbolizes beauty, pride, and spiritual awakening.',
+        usage: 'Used to represent the peacock itself, showing its dance during rain, depicting divine vehicles, and expressing grace and beauty in forest scenes.',
+        history: 'Peacocks have been revered in Indian culture since ancient times, appearing in Mauryan art (322-185 BCE). The mudra captures its regal beauty.'
+    },
+    Sikharam: {
+        category: 'Samyuta Hasta (Double Hand)',
+        meaning: 'Peak or Summit',
+        description: 'Sikhara represents mountain peaks, temple spires, and towering structures. The hands are joined at an angle with fingers pointing upward, creating a peaked shape.',
+        significance: 'Symbolizes divine structures, sacred mountains like the Himalayas, temple architecture, and spiritual aspiration reaching toward the heavens.',
+        usage: 'Used to depict temples, mountains, crowns, pinnacles, and any tall pointed structures in dance narratives.',
+        history: 'Temple architecture has been integral to Indian civilization for millennia. This mudra reflects that architectural grandeur in dance form.'
+    },
+    Kilaka: {
+        category: 'Samyuta Hasta (Double Hand)',
+        meaning: 'Bond / Playfulness',
+        description: 'Fingers of both hands interlock lightly.',
+        significance: 'Represents affection, shyness, or playful emotions.',
+        usage: 'Used to show friends gossiping, playful love, or intimate conversation.',
+        history: 'Described in Abhinaya Darpana as a mudra of soft emotions.'
+    },
+    Ardhachandran: {
+        category: 'Asamyuta Hasta (Single Hand)',
+        meaning: 'Half Moon',
+        description: 'Ardha Chandra mudra resembles the crescent moon. The thumb is extended while fingers curve gently, creating the shape of a half moon.',
+        significance: 'Represents the moon, which holds deep significance in Hindu cosmology and mythology. The moon governs emotions, tides, and time.',
+        usage: 'Used to depict the moon, show night scenes, represent lunar deities like Chandra, and indicate the passing of nights in narratives.',
+        history: 'Lunar imagery pervades Indian art and literature for over 3000 years. This mudra captures that celestial connection.'
+    },
+    Trishulam: {
+        category: 'Asamyuta Hasta (Single Hand)',
+        meaning: 'Trident',
+        description: 'Formed by extending the thumb and little finger while bending the rest, resembling Shiva\'s trident.',
+        significance: 'Represents divine power, destruction of evil, and the three cosmic functions.',
+        usage: 'Used to depict Lord Shiva, weapons, and trident-shaped objects.',
+        history: 'One of the most iconic symbols in Hindu mythology, represented in dance gestures.'
+    },
+    Kapith: {
+        category: 'Asamyuta Hasta (Single Hand)',
+        meaning: 'Wood Apple / Holding Flowers',
+        description: 'Kapitha is formed by folding the index finger to touch the thumb while the other fingers remain curled. It resembles the act of holding a flower between the fingers.',
+        significance: 'Used to depict feminine grace, delicate actions, and offerings. It is traditionally associated with Lakshmi and Parvati.',
+        usage: 'Showing grasping flowers, holding a sari end, plucking, offering items to deities, and representing goddesses.',
+        history: 'Referenced in Natyashastra as one of the fundamental mudras, used extensively in classical dance traditions.'
+    },
+    Chandrakala: {
+        category: 'Asamyuta Hasta (Single Hand)',
+        meaning: 'Digit of the Moon',
+        description: 'Formed by extending the index finger while the thumb is held straight, resembling a crescent moon or pointing gesture.',
+        significance: 'Symbolizes the moon, divine radiance, and purity.',
+        usage: 'Showing the moon, pointing out details, indicating direction, representing a crescent shape.',
+        history: 'Connected with ancient lunar symbolism in Indian tradition and appears in temple sculptures.'
+    },
+    Hamsasyam: {
+        category: 'Samyuta Hasta (Double Hand)',
+        meaning: 'Swan\'s Face',
+        description: 'Hamsasya represents the graceful swan, symbol of wisdom and discrimination. The hands are positioned to resemble the swan\'s elegant neck and beak.',
+        significance: 'The swan (hamsa) can separate milk from water, symbolizing spiritual discrimination and wisdom. It is the vehicle of Goddess Saraswati.',
+        usage: 'Depicts swans in temple ponds, shows the vehicle of Saraswati, represents grace and elegance, and illustrates stories involving sacred birds.',
+        history: 'The hamsa appears in ancient Indian literature as a symbol of the soul and spiritual journey, featured in texts like the Upanishads.'
+    },
+    Katrimukha: {
+        category: 'Asamyuta Hasta (Single Hand)',
+        meaning: 'Scissors Face / Splitting',
+        description: 'Index and middle fingers extend apart like scissors, with other fingers curled.',
+        significance: 'Represents division, sharpness, or cutting actions.',
+        usage: 'Used to show separation, jealousy, long hair, or violent scenes.',
+        history: 'A dramatic mudra used for intense storytelling in Bharatanatyam.'
+    },
+    Shukatundam: {
+        category: 'Asamyuta Hasta (Single Hand)',
+        meaning: 'Parrot\'s Beak',
+        description: 'Index finger bends slightly while other fingers curl lightly, forming a beak shape.',
+        significance: 'Represents parrots, speech, and refined articulation.',
+        usage: 'Used to show parrots, writing, or reciting poetry.',
+        history: 'Seen in classical literature where parrots symbolize sweet speech and devotion.'
+    },
+    Mushti: {
+        category: 'Asamyuta Hasta (Single Hand)',
+        meaning: 'Fist',
+        description: 'Mushti is formed by making a tight fist with all fingers curled into the palm and thumb placed over them. It represents strength and firmness.',
+        significance: 'Symbolizes strength, determination, holding objects firmly, and resolute action. Used in warrior poses and scenes of conflict.',
+        usage: 'Depicts holding weapons, showing strength, grasping reins of horses, demonstrating power, and representing determined action.',
+        history: 'As one of the basic hand positions, it appears in martial traditions, yogic mudras, and classical dance, representing focused energy.'
+    },
+    Pataka: {
+        category: 'Asamyuta Hasta (Single Hand)',
+        meaning: 'Flag',
+        description: 'All five fingers are extended and held tightly together, palm facing forward. The hand remains firm and straight like a flagstaff.',
+        significance: 'Represents firmness, clarity, and vastness. It is one of the most fundamental mudras used as a base for many other gestures.',
+        usage: 'Used to show clouds, forests, waves, blessings, stopping, denial, ceremonial actions, and large objects or landscapes.',
+        history: 'Mentioned first among the 28 single-hand mudras, Pataka is foundational in classical dance vocabulary dating back over 2000 years.'
+    },
+    Kurma: {
+        category: 'Asamyuta Hasta (Single Hand)',
+        meaning: 'Tortoise',
+        description: 'All fingers are bent inward firmly with thumb placed on top, forming a closed shell shape.',
+        significance: 'Represents stability, patience, and divine manifestation.',
+        usage: 'Used to show tortoise, stillness, and the Kurma avatar of Vishnu.',
+        history: 'Symbolic of the cosmic tortoise in many ancient Indian myths.'
+    },
+    Ardhapathaka: {
+        category: 'Asamyuta Hasta (Single Hand)',
+        meaning: 'Half Flag',
+        description: 'Formed by bending the ring finger while other fingers remain extended. It creates the shape of a partially folded flag.',
+        significance: 'Represents incomplete or partial forms and subtle narrative elements.',
+        usage: 'Used to show leaves, a board, a knife, a tower, and other partial objects.',
+        history: 'One of the classical variations mentioned in Abhinaya Darpana.'
+    },
+    Tripathaka: {
+        category: 'Asamyuta Hasta (Single Hand)',
+        meaning: 'Three Parts of a Flag',
+        description: 'Formed by bending the ring finger while keeping the rest extended like Pataka, giving a three-pointed look.',
+        significance: 'Highly versatile. Represents objects with multiple points or divine/sacred symbols.',
+        usage: 'Used for crowns, trees, flames, arrows, weapons, and Lord Indra\'s thunderbolt.',
+        history: 'Seen in Bharatanatyam, Kuchipudi, and Odissi, symbolizing many mythological elements.'
+    },
+    Suchi: {
+        category: 'Asamyuta Hasta (Single Hand)',
+        meaning: 'Needle / Point',
+        description: 'Formed by extending the index finger outward while all other fingers remain closed.',
+        significance: 'A pointing mudra used to show singularity or precision.',
+        usage: 'Used to show the number one, pointing to objects, indicating specific directions or actions.',
+        history: 'Extremely ancient gesture found in dance, ritual, and daily communication.'
+    },
+    Padmakosha: {
+        category: 'Asamyuta Hasta (Single Hand)',
+        meaning: 'Lotus Bud / Lotus Cup',
+        description: 'Fingers are curved and slightly separated, forming a rounded flower-bud shape.',
+        significance: 'Represents beauty, fullness, and nature\'s delicacy.',
+        usage: 'Showing fruits, offering flowers, depicting round objects, representing fullness or abundance.',
+        history: 'Appears frequently in temple iconography and classical dance.'
+    },
+    Chaturam: {
+        category: 'Asamyuta Hasta (Single Hand)',
+        meaning: 'Smart / Intelligent / Four-fold',
+        description: 'Formed by bending the thumb to touch the ring finger while the remaining fingers stay extended.',
+        significance: 'Represents cleverness, cunning, or deep thinking.',
+        usage: 'Used to portray clever characters, representing removal of thorns, or showing small objects.',
+        history: 'Appears in the Natyashastra in descriptions of character gestures.'
+    },
+    Tamarachudam: {
+        category: 'Asamyuta Hasta (Single Hand)',
+        meaning: 'Lotus Stalk / Lotus Petal',
+        description: 'Formed with thumb touching the middle finger while the rest curve gently.',
+        significance: 'Associated with lotus imagery and graceful, delicate actions.',
+        usage: 'Showing lotus petals, beautiful objects, or delicate natural elements.',
+        history: 'Found in various regional dance traditions and designs in temple carvings.'
+    },
+    Simhamukham: {
+        category: 'Asamyuta Hasta (Single Hand)',
+        meaning: 'Lion\'s Face',
+        description: 'Thumb and little finger meet while the rest are slightly curved resembling a lion\'s open mouth.',
+        significance: 'Symbolizes authority, courage, and ferocity.',
+        usage: 'Used to show medicine, applying sandal paste, or portraying lion-like qualities.',
+        history: 'Represents power in Bharatanatyam and appears in ancient sculpture poses.'
+    },
+    Sarpasirsha: {
+        category: 'Asamyuta Hasta (Single Hand)',
+        meaning: 'Serpent\'s Head',
+        description: 'Fingers are bent forward with thumb placed underneath forming a snake-head shape.',
+        significance: 'Represents serpents, sacred energy, and fluidity.',
+        usage: 'Used to show applying tilak, offering water, representing Nagas or flowing movement.',
+        history: 'Symbolic of serpent worship in ancient Indian culture.'
+    },
+    Samputa: {
+        category: 'Samyuta Hasta (Double Hand)',
+        meaning: 'Container / Hidden Treasure',
+        description: 'Both hands cup together forming a concealed bowl-like shape.',
+        significance: 'Represents secrecy, protection, and storing precious things.',
+        usage: 'Used to depict treasure, hidden objects, holding offerings, or protecting sacred items.',
+        history: 'Used symbolically in many classical dance narratives for mystery or value.'
+    },
+    Katakamukha_1: {
+        category: 'Asamyuta Hasta (Single Hand)',
+        meaning: 'Opening in a Bracelet',
+        description: 'Katakamukha is formed by touching the thumb to the index and middle fingers while the ring and little fingers are extended. It resembles an opening in traditional Indian jewelry.',
+        significance: 'This mudra is extremely versatile and one of the most frequently used in Bharatanatyam. It represents refined beauty and delicate actions.',
+        usage: 'Used to depict picking flowers, holding small objects, showing jewelry, stringing garlands, applying kumkum, and countless delicate feminine actions in dance.',
+        history: 'One of the 28 single-hand mudras described in ancient texts, it remains central to classical dance vocabulary.'
+    },
+    Katakamukha_2: {
+        category: 'Asamyuta Hasta (Single Hand)',
+        meaning: 'Bracelet Opening Variant 2',
+        description: 'Thumb joins the index finger while the middle finger stays curved slightly away.',
+        significance: 'Represents delicate, precise actions.',
+        usage: 'Used in garland stringing, fine handwork, elegant feminine movements.',
+        history: 'One of the classical three variations used in Bharatanatyam.'
+    },
+    Katakamukha_3: {
+        category: 'Asamyuta Hasta (Single Hand)',
+        meaning: 'Bracelet Opening Variant 3',
+        description: 'Thumb touches the middle finger while the index remains extended.',
+        significance: 'Represents craftsmanship and precision.',
+        usage: 'Used to depict delicate holding, ornamentation, and gentle actions.',
+        history: 'Traditional variation described in old dance texts and still used.'
+    },
+    Kangulam: {
+        category: 'Asamyuta Hasta (Single Hand)',
+        meaning: 'Nest / Small Cup',
+        description: 'Fingers incline inward slightly like forming a small nest.',
+        significance: 'Represents small, delicate containers or nesting spaces.',
+        usage: 'Showing a small vessel, feeding, or representing bird nests.',
+        history: 'Found in descriptions of household activities in traditional dance.'
+    },
+    Mukulam: {
+        category: 'Asamyuta Hasta (Single Hand)',
+        meaning: 'Bud',
+        description: 'All fingers join together forming a closed bud shape.',
+        significance: 'Represents beginnings, blossoming, and offering.',
+        usage: 'Showing flowers, fruits, collecting water, or symbolizing potential.',
+        history: 'Symbolic of new beginnings in classical dance and iconography.'
+    },
+    Alapadmam: {
+        category: 'Samyuta Hasta (Double Hand)',
+        meaning: 'Blooming Lotus',
+        description: 'Alapadma represents a fully bloomed lotus flower, symbolizing purity, divine beauty, and spiritual awakening. The hands are held with palms facing upward, fingers slightly curved to resemble lotus petals opening to the sky.',
+        significance: 'In Bharatanatyam, this mudra is used to depict flowers, especially the sacred lotus. It represents beauty, grace, and the unfolding of consciousness. The lotus is deeply significant in Indian culture as it grows from muddy waters yet remains pure.',
+        usage: 'Used to show offering flowers to deities, describing gardens, representing goddesses like Lakshmi who sits on a lotus, and depicting divine beauty in temple scenes.',
+        history: 'The lotus has been a sacred symbol in Indian tradition for over 3000 years, appearing in ancient Vedic texts. This mudra captures its essence in dance form.'
+    },
+    Mrigasirsha: {
+        category: 'Asamyuta Hasta (Single Hand)',
+        meaning: 'Deer\'s Head',
+        description: 'Fingers are extended apart while thumb is bent, forming deer-like delicacy.',
+        significance: 'Symbolizes gentleness, beauty, and nature.',
+        usage: 'Used to show deer, holding a lotus, applying perfume, or showing feminine grace.',
+        history: 'Appears in temple sculptures of deer and forest scenes.'
+    },
+    Hamsapaksha: {
+        category: 'Asamyuta Hasta Mudra',
+        meaning: 'Swan\'s wing',
+        description: 'The fingers are spread with the little finger slightly lowered, creating a soft, wing-like shape. The hand mimics the elegant curve of a swan\'s wing in motion.',
+        significance: 'Symbolizes purity, grace, refinement, and the gentle movement of air or feathers. Represents all things delicate, auspicious, and harmoniously flowing.',
+        usage: 'Used to depict sorting or selecting items, representing gentle touch, gliding movements, or symbolizing the elegance associated with swans.',
+        history: 'Inspired by ancient Indian symbolism of the swan (Hamsa) as a vehicle of Saraswati and a creature of purity and wisdom.'
+    },
+    Khatva: {
+        category: 'Samyuta Hasta Mudra',
+        meaning: 'Bed or cot',
+        description: 'Hands are held apart, palms outward, fingers forming a structured shape that resembles the frame of a traditional Indian cot.',
+        significance: 'Symbolizes rest, support, and the space of dreams or meditation. Represents the physical and symbolic foundation for sleep or spiritual repose.',
+        usage: 'Used in scenes where characters rest, lie down, or refer to beds, cots, or places of sleeping quarters.',
+        history: 'Derived from ancient Indian household objects and storytelling traditions where daily life items were expressed through distinct mudras.'
+    },
+    Bramaram: {
+        category: 'Asamyuta Hasta Mudra',
+        meaning: 'Bee',
+        description: 'The index finger touches the thumb while the remaining fingers curve softly like delicate wings. The hand forms a shape reminiscent of a tiny bee with fluttering motion.',
+        significance: 'Represents beauty, delicacy, restlessness, and the gentle presence of nature. Symbolizes fragrances, flowers, and subtle emotional transitions.',
+        usage: 'Used to depict bees, insects hovering around flowers, or expressing themes of charm, shyness, or subtle admiration.',
+        history: 'Inspired by classical poetry and temple carvings where bees symbolized devotion and the fragrance of divine spaces.'
+    }
+};
+
+        // Configuration
+        const API_URL = 'http://localhost:5000';
+        let currentMode = 'detect';
+        let targetMudra = null;
+        let video, canvas, ctx;
+        let isProcessing = false;
+        let isFrozen = false;
+        let lastDetectedMudra = null;
+
+        // Initialize
+        window.onload = async function () {
+            canvas = document.getElementById('videoCanvas');
+            ctx = canvas.getContext('2d');
+
+            await loadMudras();
+            await startWebcam();
+            processFrame();
+        };
+
+        async function loadMudras() {
+            try {
+                const response = await fetch(`${API_URL}/api/mudras`);
+                const data = await response.json();
+
+                const select = document.getElementById('targetMudraSelect');
+                data.mudras.forEach(mudra => {
+                    const option = document.createElement('option');
+                    option.value = mudra;
+                    option.textContent = mudra;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error loading mudras:', error);
+            }
+        }
+
+        async function startWebcam() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { width: 1280, height: 720 }
+                });
+
+                video = document.createElement('video');
+                video.srcObject = stream;
+                video.play();
+
+                video.onloadedmetadata = () => {
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                };
+            } catch (error) {
+                console.error('Error accessing webcam:', error);
+                alert('Could not access webcam. Please check permissions.');
+            }
+        }
+
+        function toggleFreeze() {
+            isFrozen = !isFrozen;
+            const btn = document.getElementById('freezeBtn');
+            if (isFrozen) {
+                btn.textContent = '▶ Resume';
+                btn.classList.add('frozen');
+            } else {
+                btn.textContent = '⏸ Freeze Frame';
+                btn.classList.remove('frozen');
+            }
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            if (mode === 'practice') {
+                document.getElementById('targetSection').style.display = 'block';
+                document.getElementById('accuracySection').style.display = 'block';
+            } else {
+                document.getElementById('targetSection').style.display = 'none';
+                document.getElementById('accuracySection').style.display = 'none';
+                targetMudra = null;
+            }
+        }
+
+        function setTargetMudra() {
+            targetMudra = document.getElementById('targetMudraSelect').value;
+            if (targetMudra) {
+                updateMudraInfo(targetMudra);
+            }
+        }
+
+        function updateMudraInfo(mudraName) {
+            // Clean mudra name (remove (1) suffix)
+            const cleanName = mudraName.replace(/\(\d+\)$/, '').trim();
+
+            const info = mudraDatabase[cleanName];
+            const infoDiv = document.getElementById('mudraInfo');
+
+            if (info) {
+                infoDiv.innerHTML = `
+                    <div class="mudra-name">${cleanName}</div>
+                    <div class="mudra-category">${info.category}</div>
+                    <div class="divider"></div>
+                    
+                    <div class="info-section">
+                        <h4>Meaning</h4>
+                        <p>${info.meaning}</p>
+                    </div>
+                    
+                    <div class="info-section">
+                        <h4>Description</h4>
+                        <p>${info.description}</p>
+                    </div>
+                    
+                    <div class="info-section">
+                        <h4>Significance</h4>
+                        <p>${info.significance}</p>
+                    </div>
+                    
+                    <div class="info-section">
+                        <h4>Usage in Dance</h4>
+                        <p>${info.usage}</p>
+                    </div>
+                    
+                    <div class="info-section">
+                        <h4>Historical Context</h4>
+                        <p>${info.history}</p>
+                    </div>
+                `;
+            } else {
+                infoDiv.innerHTML = `
+                    <div class="mudra-name">${mudraName}</div>
+                    <div class="divider"></div>
+                    <div class="info-section">
+                        <p>Detailed information for this mudra is being compiled. This is a traditional Bharatanatyam hand gesture with deep cultural significance.</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function processFrame() {
+            if (!video || !video.videoWidth) {
+                requestAnimationFrame(processFrame);
+                return;
+            }
+
+            if (!isFrozen) {
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                if (!isProcessing) {
+                    isProcessing = true;
+
+                    try {
+                        const imageData = canvas.toDataURL('image/jpeg', 0.8);
+
+                        const response = await fetch(`${API_URL}/api/process_frame`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                image: imageData,
+                                target_mudra: currentMode === 'practice' ? targetMudra : null
+                            })
+                        });
+
+                        const data = await response.json();
+
+                        if (data.success) {
+                            updateUI(data);
+                            drawLandmarks(data.landmarks);
+                            if (data.worst_joint_idx !== undefined) {
+                                highlightJoint(data.landmarks[data.worst_joint_idx], data.worst_joint_error);
+                            }
+
+                            // Update info panel when mudra changes
+                            if (currentMode === 'detect' && data.predicted_mudra !== lastDetectedMudra) {
+                                lastDetectedMudra = data.predicted_mudra;
+                                updateMudraInfo(data.predicted_mudra);
+                            }
+                        } else {
+                            document.getElementById('feedbackMessage').textContent = data.message;
+                        }
+                    } catch (error) {
+                        console.error('Error processing frame:', error);
+                    }
+
+                    isProcessing = false;
+                }
+            }
+
+            requestAnimationFrame(processFrame);
+        }
+
+        function updateUI(data) {
+            document.getElementById('predictedMudra').textContent = data.predicted_mudra;
+            document.getElementById('confidence').textContent =
+                `${(data.confidence * 100).toFixed(0)}%`;
+
+            if (currentMode === 'practice' && targetMudra) {
+                const accuracy = data.accuracy || 0;
+                document.getElementById('accuracyFill').style.width = `${accuracy}%`;
+                document.getElementById('accuracyFill').textContent = `${accuracy.toFixed(0)}%`;
+
+                const feedbackEl = document.getElementById('feedbackMessage');
+                if (data.is_correct) {
+                    feedbackEl.innerHTML = '<span class="feedback-success">✓ PERFECT!</span>';
+                } else {
+                    feedbackEl.innerHTML = `<span class="feedback-error">${data.feedback}</span>`;
+                }
+            } else {
+                document.getElementById('feedbackMessage').textContent =
+                    `You are performing: ${data.predicted_mudra}`;
+            }
+        }
+
+        function drawLandmarks(landmarks) {
+            if (!landmarks) return;
+
+            const connections = [
+                [0, 1], [1, 2], [2, 3], [3, 4],
+                [0, 5], [5, 6], [6, 7], [7, 8],
+                [0, 9], [9, 10], [10, 11], [11, 12],
+                [0, 13], [13, 14], [14, 15], [15, 16],
+                [0, 17], [17, 18], [18, 19], [19, 20],
+                [5, 9], [9, 13], [13, 17]
+            ];
+
+            ctx.strokeStyle = '#d4af37';
+            ctx.lineWidth = 3;
+            connections.forEach(([start, end]) => {
+                const startLm = landmarks[start];
+                const endLm = landmarks[end];
+
+                ctx.beginPath();
+                ctx.moveTo(startLm.x * canvas.width, startLm.y * canvas.height);
+                ctx.lineTo(endLm.x * canvas.width, endLm.y * canvas.height);
+                ctx.stroke();
+            });
+
+            landmarks.forEach(lm => {
+                ctx.fillStyle = '#d4af37';
+                ctx.beginPath();
+                ctx.arc(
+                    lm.x * canvas.width,
+                    lm.y * canvas.height,
+                    6, 0, 2 * Math.PI
+                );
+                ctx.fill();
+            });
+        }
+
+        function highlightJoint(landmark, error) {
+            if (!landmark || error < 0.05) return;
+
+            const x = landmark.x * canvas.width;
+            const y = landmark.y * canvas.height;
+
+            ctx.strokeStyle = '#c9302c';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.arc(x, y, 20, 0, 2 * Math.PI);
+            ctx.stroke();
+
+            ctx.fillStyle = 'rgba(201, 48, 44, 0.3)';
+            ctx.fill();
+        }
+    </script>
+</body>
+
+</html>

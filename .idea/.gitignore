@@ -1,0 +1,17 @@
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Large model files
+*.pkl
+*.h5
+*.pt
+*.onnx
+
+# OS files
+.DS_Store
